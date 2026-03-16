@@ -1,12 +1,10 @@
 <h1>ExpNo 1 :Developing AI Agent with PEAS Description</h1>
-<h3>Name: SUDHARSAN RAJA</h3>
-<h3>Register Number :212224080056 </h3>
+<h3>Name: SUDHARSAN RAJA </h3>
+<h3>Register Number: 212224080056</h3>
 
 
 <h3>AIM:</h3>
-<br>
 <p>To find the PEAS description for the given AI problem and develop an AI agent.</p>
-<br>
 <h3>Theory</h3>
 <h3>Medicine prescribing agent:</h3>
 <p>Such this agent prescribes medicine for fever (greater than 98.5 degrees) which we consider here as unhealthy, by the user temperature input, and another environment is rooms in the hospital (two rooms). This agent has to consider two factors one is room location and an unhealthy patient in a random room, the agent has to move from one room to another to check and treat the unhealthy person. The performance of the agent is calculated by incrementing performance and each time after treating in one room again it has to check another room so that the movement causes the agent to reduce its performance. Hence, agents prescribe medicine to unhealthy.</p>
@@ -40,72 +38,53 @@
 <p>Treat unhealthy patients in each room. And check for the unhealthy patients in random room</p>
 <h3>STEP 5:</h3>
 <p>Measure the performance parameters: For each treatment performance incremented, for each movement performance decremented</p>
-
-<h3>Program:</h3>
+<H3>PROGRAM:</H3>
 
 ```
 import random
+ROOMS = ["Room 1", "Room 2"]
+FEVER_THRESHOLD = 98.5
+environment = {
+    "Room 1": round(random.uniform(97.0, 101.0), 1),
+    "Room 2": round(random.uniform(97.0, 101.0), 1)
+}
+agent_location = "Room 1"
+performance_score = 0
 
-class MedicinePrescribingAgent:
-    def __init__(self):
-        self.performance = 0
-        self.rooms = ["Room 1", "Room 2"]
-        self.current_room = self.rooms[0]
-        self.environment = {}
+def check_temperature(room):
+    temp = environment[room]
+    print(f"Checking {room}... Patient temperature: {temp}°F")
+    return temp
 
-    def sense_environment(self):
-        temperature = round(random.uniform(97, 102), 1)
-        self.environment[self.current_room] = temperature
-        return temperature
+def treat_patient(room):
+    global performance_score
+    print(f"Treating patient in {room}... ")
+    performance_score += 1 
 
-    def prescribe_medicine(self, temperature):
-        print(f"Checking {self.current_room}... Patient temperature: {temperature}°F")
-        if temperature > 98.5:
-            print(f"Treatment given in {self.current_room}.")
-            self.performance += 10
-        else:
-            print(f"No treatment needed in {self.current_room}.")
+def move_to(room):
+    global agent_location, performance_score
+    if agent_location != room:
+        print(f"Moving from {agent_location} to {room}... ")
+        agent_location = room
+        performance_score -= 1  
+print("Medicine Prescribing Agent Simulation Started \n")
 
-    def move_to_other_room(self):
-        self.current_room = (
-            "Room 2" if self.current_room == "Room 1" else "Room 1"
-        )
-        print(f"\nMoving from {'Room 1' if self.current_room == 'Room 2' else 'Room 2'} to {self.current_room}...")
-        self.performance -= 1
-
-    def run_agent(self, cycles=2):
-        print("Medicine Prescribing Agent Simulation Started\n")
-        for _ in range(cycles):
-            temp = self.sense_environment()
-            self.prescribe_medicine(temp)
-            self.move_to_other_room()
-
-        print("\nSimulation Complete!")
-        print("Final Performance Score:", self.performance)
-        print("Environment State:", self.environment)
-
-
-agent = MedicinePrescribingAgent()
-agent.run_agent(cycles=2)
+for room in ROOMS:
+    move_to(room)
+    temp = check_temperature(room)
+    if temp > FEVER_THRESHOLD:
+        treat_patient(room)
+    else:
+        print(f"No treatment needed in {room}.\n")
+print("\nSimulation Complete!")
+print(f"Final Performance Score: {performance_score}")
+print("Environment State:", environment)
 ```
 
-<h3>Output:</h3>
+OUTPUT:
 
-Medicine Prescribing Agent Simulation Started
+<img width="1060" height="511" alt="image" src="https://github.com/user-attachments/assets/421c4595-9890-403d-92f3-185ff8b4805e" />
 
-Checking Room 1... Patient temperature: 100.8°F
-Treatment given in Room 1.
+RESULT:
 
-Moving from Room 1 to Room 2...
-Checking Room 2... Patient temperature: 100.1°F
-Treatment given in Room 2.
-
-Moving from Room 2 to Room 1...
-
-Simulation Complete!
-Final Performance Score: 18
-Environment State: {'Room 1': 100.8, 'Room 2': 100.1}
-
-<h3>Result:</h3>
-
-The AI medicine prescribing agent was successfully implemented.
+Thus the AI agent is developed successfully
